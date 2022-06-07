@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo</title>
+    <style>
+    
+        select{
+            padding: 5px;
+            min-width: 70px;
+        }
+        button{
+            padding: 5px 10px;
+            background-color: darkblue;
+            color: #ffffff;
+            border-radius: 25px;
+            margin-left: 5%;
+        }
+        div{
+           margin: 10px; 
+        }
+        .tasks{
+            width: 70%;
+            border: 1px solid black;
+            min-height: 500px;
+            float: left;
+            display: inline;
+        }
+        .task-form{
+            display: inline;
+            width: 20%;
+        }
+        .remove{
+            padding: 5px;
+            cursor: pointer;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tasks">
+            <div id="quad1"></div>
+            <div id="quad2"></div>
+            <div id="quad3"></div>
+            <div id="quad4"></div>
+        </div>
+        <div class="task-form">
+            <div>
+            <input id="title" type="text" placeholder="Enter Title"/>
+        </div>
+    <div>
+            <input id="description" type="text" placeholder="Enter Description"/>
+     </div>
+     <div>
+         <label for="priority">Select priority</label>
+            <select name="priority" id="priority">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+    <div>
+            <button onclick="addTask()">Add Task</button>
+        </div>
+        </div>
+    </div>
+
+    <script>
+
+
+    let tasks = [];            
+        function addTask(){
+            tasks.push({
+                'title': document.getElementById('title').value,
+                'description': document.getElementById('description').value,
+                'priority': document.getElementById('priority').value
+            });
+            
+            addTaskInQuadrant(tasks, 'quad1', '1', 'red');
+            addTaskInQuadrant(tasks, 'quad2', '2', 'green');
+            addTaskInQuadrant(tasks, 'quad3', '3', 'purple');
+            addTaskInQuadrant(tasks, 'quad4', '4', 'black');        
+        }
+
+        function removeTask(e){
+            console.log(e)
+            const element = document.getElementById(e);
+            element.remove();
+        }
+
+        function addTaskInQuadrant(tasks, quadrantName, filterByPriority, borderColor){
+            const tasksToAdd = tasks.filter(t => t.priority == filterByPriority);
+            let htmlToAdd = '';
+            tasksToAdd.map((t, index) => {
+                //document.getElementsByClassName('quad1').append('<div style="width: 25px; border: 1px solid black;">'+ t.title +'</div>');
+                //return 
+                htmlToAdd = htmlToAdd + '<div id="'+ t.priority + '_' + index +'" style="border: 1px solid '+ borderColor +'; margin: 5px; border-radius: 25px; padding: 5px 10px; max-width:75px;" title="' + t.description +'">'+ t.title +'<span class="remove" onclick="removeTask("'+ t.priority + '_' + index +'")">x</span></div>';
+            });
+            document.getElementById(quadrantName).innerHTML = htmlToAdd;
+        }
+    </script>
+</body>
+</html>
